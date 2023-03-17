@@ -1,33 +1,58 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+// import Box from '@mui/material/Box';
+// import TextField from '@mui/material/TextField';
+import { Link } from 'react-router-dom';
+import { REGISTER } from 'lib/routes';
+import { useState } from 'react';
+import {
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut,
+  } from "firebase/auth";
+    import { auth } from "lib/firebase";
 
 export default function Login() {
-  return (
-    <Box display="flex" justifyContent="center" alignItems="center"
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-       <TextField color="secondary" focused 
-          helperText="Enter your UserName"
-          id="standard-username-input"
-          label="UserName"
-          type="username"
+    const [loginEmail, setLoginEmail] = useState("");
+    const [loginPassword, setLoginPassword] = useState("");
+    const [user, setUser] = useState({});
 
-          variant="standard"
-        />
-    <TextField color="secondary" focused
-          helperText="Enter your Password"
-          id="standard-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          variant="standard"
-        />
-    </Box>
+    onAuthStateChanged(auth, (currentUser) => {
+        setUser(currentUser);
+      });
+
+    const login = async () => {
+        try {
+          const user = await signInWithEmailAndPassword(
+            auth,
+            loginEmail,
+            loginPassword
+          );
+          console.log(user);
+        } catch (error) {
+          console.log(error.message);
+        }
+      };
+    
+      const logout = async () => {
+        await signOut(auth);
+      };
+    
+  return (
+    <div>
+          <h3> Login </h3>
+          <input
+              placeholder="Email..."
+              onChange={(event) => {
+                  setLoginEmail(event.target.value);
+              }}/>
+            <input
+                placeholder="Password..."
+                onChange={(event) => {
+                    setLoginPassword(event.target.value);   
+                }}/>
+            <button onClick={login}> Login </button>
+            <Link to={REGISTER}>Register</Link>
+            <button onClick={logout}> Logout </button>
+    </div>
   );
 }
