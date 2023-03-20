@@ -26,6 +26,10 @@ export function useLogin() {
         setLoading(true);
     try{
        await signInWithEmailAndPassword(auth, email, password)
+       .then((userCredential) => {
+        // Save the user's authentication state to Local Storage
+        localStorage.setItem('user', JSON.stringify(userCredential.user));
+      })
         navigate(redirectTo);
 
     } catch (error) {

@@ -80,7 +80,7 @@ export default function Register() {
             disabled={isLoading}
             sx={{ mt: 3, mb: 2 }}
           >
-            {isLoading ? 'Logging In...' : 'Register'}
+            {isLoading ? 'Creating Account...' : 'Register'}
           </Button>
         </form>
         <Typography variant="body1" align="center">
