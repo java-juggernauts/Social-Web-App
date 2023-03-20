@@ -73,5 +73,4 @@ export default function Login() {
         </Typography>
       </Box>
     </Container>
-  );
-}
+
