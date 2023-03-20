@@ -1,75 +1,76 @@
-import React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Box, Button, Container, FormControl, FormHelperText, Input, Link, Typography } from '@mui/material';
+import { Alert } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { useLogin } from 'hooks/auth';
+import { useForm } from 'react-hook-form';
+import { emailValidate, passwordValidate } from 'utils/form-validate';
+import { DASHBOARD, REGISTER } from 'lib/routes';
 
 export default function Login() {
-  const theme = createTheme();
+  const { login, isLoading } = useLogin();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  async function handleLogin(data) {
+    login(data.email, data.password, DASHBOARD);
+    console.log(data);
+  }
+
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            display: "flex",
-            marginTop: 6,
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ margin: 1, height: 60, width: 60 }}></Avatar>
-          <Typography component="h1" variant="h5">
-            Login
-          </Typography>
-          <Box component="form" noValidate sx={{ marginTop: 5 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="given-name"
-                  name="username"
-                  required
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="password"
-                  label="Password"
-                  name="password"
-                  autoComplete="password"
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ marginTop: 3, marginBottom: 2 }}
-            >
-              Login
-            </Button>
-            <Grid container justifyContent="center">
-              <Grid item>
-                <Link href="/register" variant="body2">
-                  Don't have an account? Sign up
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
-  );
-}
+    <Container maxWidth="sm">
+      <Box mt={10} p={5} boxShadow={5} borderRadius="borderRadius">
+        <Typography component="h1" variant="h5" align="center">
+          Log In
+        </Typography>
+        {errors.submit && (
+          <Alert severity="error" sx={{ mt: 2, mb: 1 }}>
+            {errors.submit.message}
+          </Alert>
+        )}
+        <form onSubmit={handleSubmit(handleLogin)}>
+          <FormControl fullWidth margin="normal" error={Boolean(errors.email)}>
+            <Input
+              type="email"
+              placeholder="Email"
+              {...register('email', emailValidate)}
+              autoComplete="email"
+            />
+            {errors.email && (
+              <FormHelperText>{errors.email.message}</FormHelperText>
+            )}
+          </FormControl>
+          <FormControl fullWidth margin="normal" error={Boolean(errors.password)}>
+            <Input
+              type="password"
+              placeholder="Password"
+              {...register('password', passwordValidate)}
+                autoComplete="current-password"
+            />
+            {errors.password && (
+              <FormHelperText>{errors.password.message}</FormHelperText>
+            )}
+          </FormControl>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            size="large"
+            type="submit"
+            disabled={isLoading}
+            sx={{ mt: 3, mb: 2 }}
+          >
+            {isLoading ? 'Logging In...' : 'Log In'}
+          </Button>
+        </form>
+        <Typography variant="body1" align="center">
+          Don't have an account?{' '}
+          <Link component={RouterLink} to={REGISTER} underline="always">
+            Register
+          </Link>
+        </Typography>
+      </Box>
+    </Container>
+
