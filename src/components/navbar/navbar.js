@@ -27,7 +27,7 @@ export default function Navbar() {
           </Typography>
           {/* <Button component={Link} to="/" color="inherit">Profile Page</Button> */}
           <Button component={Link} to="/chatroom" color="inherit">Chatroom</Button>
-          <Button onClick={logout} isLoading={isLoading}color="inherit">logout</Button>
+          <Button onClick={logout} color="inherit"> {isLoading ? 'Logging out...' : 'Logout'} </Button>
         </Toolbar>
       </AppBar>
     </div>

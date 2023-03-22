@@ -16,7 +16,7 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-export const storage = getStorage(app);
+export const storage = getStorage(app);//
 export const auth = getAuth(app);
 
 // const email = 'user2@gmail.com'

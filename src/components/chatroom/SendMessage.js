@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { auth, db } from "lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
-const SendMessage = ({ scroll }) => {
+const SendMessage = ({ scroll, selectedUser }) => {
   const [message, setMessage] = useState("");
 
   const sendMessage = async (event) => {
@@ -11,13 +11,14 @@ const SendMessage = ({ scroll }) => {
       alert("Enter valid message");
       return;
     }
-    const { uid, displayName, photoURL } = auth.currentUser;
+
+   const { uid } = auth.currentUser;
     await addDoc(collection(db, "messages"), {
       text: message,
-      name: displayName,
-      avatar: photoURL,
       createdAt: serverTimestamp(),
-      uid,
+      senderUid: uid,
+      recipientUid: selectedUser.id,
+      participants: [uid, selectedUser.id],
     });
     setMessage("");
     scroll.current.scrollIntoView({ behavior: "smooth" });

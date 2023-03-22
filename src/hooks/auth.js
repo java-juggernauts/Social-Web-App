@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { setDoc, doc } from 'firebase/firestore';
 import isUsernameExists from 'utils/isUsernameExist';
-// import { useEffect, useState } from 'react';
 
 export function useAuth() {
     const [authUser, isLoading, error] = useAuthState(auth);
