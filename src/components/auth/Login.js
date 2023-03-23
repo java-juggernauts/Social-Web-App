@@ -18,12 +18,13 @@ export default function Login() {
   } = useForm();
 
   async function handleLogin(data) {
-    login(data.email, data.password, DASHBOARD);
     const user = await login(data.email, data.password, DASHBOARD);
-    setCurrentUser(user);
-    localStorage.setItem("currentUser", JSON.stringify(user));
+    if (user) {
+      setCurrentUser(user);
+      localStorage.setItem("currentUser", JSON.stringify(user));
+    }
   }
-
+  
   return (
     <Container maxWidth="sm">
       <Box mt={10} p={5} boxShadow={5} borderRadius="borderRadius">

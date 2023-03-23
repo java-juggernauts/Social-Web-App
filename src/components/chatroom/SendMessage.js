@@ -11,14 +11,15 @@ const SendMessage = ({ scroll, selectedUser }) => {
       alert("Enter valid message");
       return;
     }
-
+   const participantsUIDs = [auth.currentUser.uid, selectedUser.id].sort().join("-");
    const { uid } = auth.currentUser;
     await addDoc(collection(db, "messages"), {
       text: message,
       createdAt: serverTimestamp(),
       senderUid: uid,
       recipientUid: selectedUser.id,
-      participants: [uid, selectedUser.id],
+      participants: participantsUIDs,
+      // participants: [uid, selectedUser.id],
     });
     setMessage("");
     scroll.current.scrollIntoView({ behavior: "smooth" });

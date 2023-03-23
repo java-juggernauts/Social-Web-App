@@ -24,12 +24,19 @@ const UserList = styled(Box)`
   border-right: 1px solid #ccc;
 `;
 function Chatroom() { // Pass currentUser as a prop
-const { currentUser } = useCurrentUser(); // Or use the context hook
-console.log("This is the logged in user", currentUser);
+  const { currentUser } = useCurrentUser(); // Or use the context hook
+  const [selectedUser, setSelectedUser] = useState("");
+  console.log("This is the logged in user", currentUser?.uid);
+  console.log("This is the selectedUser", selectedUser?.id);
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState("");
   const scroll = useRef();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (currentUser) {
+      setLoading(false);
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     console.log("userQuery useEffect");
@@ -47,9 +54,11 @@ console.log("This is the logged in user", currentUser);
 
   useEffect(() => {
     if (!selectedUser || !currentUser) return;
-    
+    const participantsUIDs = [currentUser.uid, selectedUser.id].sort().join("-");
+    console.log("participantsUIDs", participantsUIDs);
     const messageQuery = query(
       collection(db, "messages"),
+      where("participants", "==", participantsUIDs),
       orderBy("createdAt"),
       limit(50)
     );
@@ -73,7 +82,9 @@ console.log("This is the logged in user", currentUser);
     setSelectedUser(user);
     setTimeout(() => scroll.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
-
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <ChatBox>
       <UserList>

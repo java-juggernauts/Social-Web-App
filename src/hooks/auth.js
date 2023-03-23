@@ -20,29 +20,28 @@ export function useAuth() {
 export function useLogin() {
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
-
-    async function login(email, password, redirectTo=DASHBOARD) {
-        setLoading(true);
-    try{
-       await signInWithEmailAndPassword(auth, email, password)
-       .then((userCredential) => {
+  
+    async function login(email, password, redirectTo = DASHBOARD) {
+      setLoading(true);
+      let user = null;
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        user = userCredential.user;
         // Save the user's authentication state to Local Storage
-        // localStorage.setItem('user', JSON.stringify(userCredential.user));
-      })
+        // localStorage.setItem('user', JSON.stringify(user));
         navigate(redirectTo);
-
-    } catch (error) {
-        console.log(error.message)
-
-    return false
+      } catch (error) {
+        console.log(error.message);
+        return false;
+      } finally {
+        setLoading(false);
       }
-        
-    setLoading(false)
-    return true
-}
-return { login, isLoading };
-}
-
+      return user;
+    }
+  
+    return { login, isLoading };
+  }
+  
 export function useLogout() {
  const [signOut, isLoading, error] = useSignOut(auth);
  const { enqueueSnackbar } = useSnackbar();
