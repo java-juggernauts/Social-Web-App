@@ -18,10 +18,3 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const storage = getStorage(app);//
 export const auth = getAuth(app);
-
-// const email = 'user2@gmail.com'
-// const password = '123456'
-// setPersistence(auth, browserSessionPersistence)
-//   .then(() => {
-//     return signInWithEmailAndPassword(auth, email, password);
-//   })

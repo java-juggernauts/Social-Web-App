@@ -5,8 +5,11 @@ import { useLogin } from 'hooks/auth';
 import { useForm } from 'react-hook-form';
 import { emailValidate, passwordValidate } from 'utils/form-validate';
 import { DASHBOARD, REGISTER } from 'lib/routes';
+import { useCurrentUser } from 'context/CurentUserContext'; 
+
 
 export default function Login() {
+  const { setCurrentUser } = useCurrentUser();
   const { login, isLoading } = useLogin();
   const {
     register,
@@ -16,7 +19,9 @@ export default function Login() {
 
   async function handleLogin(data) {
     login(data.email, data.password, DASHBOARD);
-    console.log(data);
+    const user = await login(data.email, data.password, DASHBOARD);
+    setCurrentUser(user);
+    localStorage.setItem("currentUser", JSON.stringify(user));
   }
 
   return (
