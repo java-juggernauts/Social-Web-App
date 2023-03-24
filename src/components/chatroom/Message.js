@@ -1,7 +1,7 @@
 import React from "react";
 import { auth } from "lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-
+import "./message.css";
 const Message = ({ message, senderUsername, senderAvatar }) => {
   const [user] = useAuthState(auth);
 
