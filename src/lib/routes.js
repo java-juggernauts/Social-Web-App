@@ -12,23 +12,13 @@ import Dashboard from "components/dashboard";
 export const ROOT = "/";
 export const LOGIN = "/login";
 export const REGISTER = "/register";
-export const POSTS = "/posts";
-export const SINGLEPOST = `/posts/:id`;
+export const POSTS = "/protected/posts";
+export const SINGLEPOST = `/protected/posts/:id`;
 export const DASHBOARD = "/protected/dashboard";
 export const PROTECTED = "/protected";
 export const CHATROOM = "/protected/chatroom";
 
-export const router = createBrowserRouter([
-{path: ROOT, element: "Public Root"},
-{path: LOGIN, element: <Login/>},
-{path: REGISTER, element: <Register/>},
-{path: POSTS, element: <Posts/>},
-{path: SINGLEPOST, element: <SinglePost/>},
-{path: PROTECTED, element: <Layout/>, children: [{
-    path: DASHBOARD,
-    element: "Dashboard",
-}]},
-]);
+
 
 function RouterWrapper() {
   const { currentUser } = useCurrentUser();
@@ -42,7 +32,9 @@ function RouterWrapper() {
         <Route path={PROTECTED} element={<Layout />}>
         <Route index path={DASHBOARD} element={<Dashboard />} />
         <Route path={CHATROOM} element={<Chatroom currentUser={currentUser} />} />
-        </Route>
+        <Route path={POSTS} element={<Posts />} />
+        <Route path={SINGLEPOST} element={<SinglePost />} />
+       </Route>
       </Routes>
     </BrowserRouter>
   );
