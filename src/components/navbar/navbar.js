@@ -25,9 +25,9 @@ export default function Navbar() {
           <Typography variant="h6" css={titleStyles}>
         
           </Typography>
-          <Button component={Link} to="/" color="inherit">Profile Page</Button>
-          <Button component={Link} to="/" color="inherit">Chatroom</Button>
-          <Button onClick={logout} isLoading={isLoading}color="inherit">logout</Button>
+          {/* <Button component={Link} to="/" color="inherit">Profile Page</Button> */}
+          <Button component={Link} to="/protected/chatroom" color="inherit">Chatroom</Button>
+          <Button onClick={logout} color="inherit"> {isLoading ? 'Logging out...' : 'Logout'} </Button>
         </Toolbar>
       </AppBar>
     </div>
