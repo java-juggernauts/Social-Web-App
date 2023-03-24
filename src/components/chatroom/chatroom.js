@@ -9,7 +9,6 @@ import { useCurrentUser } from "context/CurentUserContext";
 
 const ChatBox = styled(Box)`
   display: flex;
-  flex-direction: column;
   height: 100vh;
 `;
 
@@ -19,8 +18,8 @@ const MessagesWrapper = styled(Box)`
   flex-grow: 1;
   overflow-y: auto;
   padding: 1rem;
-  background-color: #fff;
-  width: 20%;
+  background-color: #f2f2f2;
+  width: 75%;
 `;
 
 const UserList = styled(Box)`
@@ -29,7 +28,17 @@ const UserList = styled(Box)`
   padding: 1rem;
   border-right: 1px solid #ccc;
   background-color: #f5f5f5;
-  width: 10%;
+  width: 25%;
+  overflow-y: auto;
+`;
+
+const UserItem = styled.div`
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+  &:hover {
+    background-color: #ddd;
+  }
 `;
 function Chatroom() {
   const { currentUser } = useCurrentUser();
@@ -95,25 +104,25 @@ function Chatroom() {
     <ChatBox>
       <UserList>
         {users.map((user) => (
-          <div key={user.id} onClick={() => handleUserSelection(user)}>
+          <UserItem key={user.id} onClick={() => handleUserSelection(user)}>
             {user.username}
-          </div>
+          </UserItem>
         ))}
       </UserList>
       <MessagesWrapper>
-  {messages?.map((message) => {
-    const sender = users.find((user) => user.id === message.senderUid);
-    return (
-      <Message
-        key={message.id}
-        message={message}
-        senderUsername={sender ? sender.username : ""}
-        senderAvatar={sender ? sender.avatar : ""}
-      />
-    );
-  })}
-  <span ref={scroll}></span>
-</MessagesWrapper>
+        {messages?.map((message) => {
+          const sender = users.find((user) => user.id === message.senderUid);
+          return (
+            <Message
+              key={message.id}
+              message={message}
+              senderUsername={sender ? sender.username : ""}
+              senderAvatar={sender ? sender.avatar : ""}
+            />
+          );
+        })}
+        <span ref={scroll}></span>
+      </MessagesWrapper>
 
       {selectedUser && <SendMessage scroll={scroll} currentUser={currentUser} selectedUser={selectedUser} />}
     </ChatBox>

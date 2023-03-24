@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { auth, db } from "lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-
+import "./message.css";
 const SendMessage = ({ scroll, selectedUser }) => {
   const [message, setMessage] = useState("");
 
@@ -19,7 +19,6 @@ const SendMessage = ({ scroll, selectedUser }) => {
       senderUid: uid,
       recipientUid: selectedUser.id,
       participants: participantsUIDs,
-      // participants: [uid, selectedUser.id],
     });
     setMessage("");
     scroll.current.scrollIntoView({ behavior: "smooth" });
