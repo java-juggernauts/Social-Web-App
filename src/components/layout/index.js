@@ -1,9 +1,8 @@
-// import { LOGIN } from 'lib/routes';
-// import { useEffect } from 'react';
+
 import { Outlet } from 'react-router-dom';
 import { useAuth } from 'hooks/auth';
 import Navbar from 'components/navbar/navbar';
-import Chatroom from 'components/chatroom/chatroom';
+
 
 export default function Layout({ currentUSer }) {
 
@@ -16,7 +15,6 @@ export default function Layout({ currentUSer }) {
     return (
         <>
         <Navbar />
-        <Chatroom currentUser={currentUSer} />
         <Outlet />
         </>
     );

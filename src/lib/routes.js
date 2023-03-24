@@ -12,7 +12,7 @@ export const LOGIN = "/login";
 export const REGISTER = "/register";
 export const DASHBOARD = "/protected/dashboard";
 export const PROTECTED = "/protected";
-export const CHATROOM = "/chatroom";
+export const CHATROOM = "/protected/chatroom";
 
 function RouterWrapper() {
   const { currentUser } = useCurrentUser();
@@ -21,11 +21,11 @@ function RouterWrapper() {
     <BrowserRouter>
       <Routes>
         <Route path={ROOT} element={<Login />} />
-        <Route path={CHATROOM} element={<Chatroom currentUser={currentUser} />} />
         <Route path={LOGIN} element={<Login />} />
         <Route path={REGISTER} element={<Register />} />
         <Route path={PROTECTED} element={<Layout />}>
-          <Route index path={DASHBOARD} element={<Dashboard />} />
+        <Route index path={DASHBOARD} element={<Dashboard />} />
+        <Route path={CHATROOM} element={<Chatroom currentUser={currentUser} />} />
         </Route>
       </Routes>
     </BrowserRouter>

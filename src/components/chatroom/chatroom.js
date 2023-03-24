@@ -6,6 +6,7 @@ import SendMessage from "./SendMessage";
 import { Box } from "@mui/material";
 import styled from "@emotion/styled";
 import { useCurrentUser } from "context/CurentUserContext";
+
 const ChatBox = styled(Box)`
   display: flex;
   flex-direction: column;
@@ -13,8 +14,13 @@ const ChatBox = styled(Box)`
 `;
 
 const MessagesWrapper = styled(Box)`
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   overflow-y: auto;
+  padding: 1rem;
+  background-color: #fff;
+  width: 20%;
 `;
 
 const UserList = styled(Box)`
@@ -22,9 +28,11 @@ const UserList = styled(Box)`
   flex-direction: column;
   padding: 1rem;
   border-right: 1px solid #ccc;
+  background-color: #f5f5f5;
+  width: 10%;
 `;
-function Chatroom() { // Pass currentUser as a prop
-  const { currentUser } = useCurrentUser(); // Or use the context hook
+function Chatroom() {
+  const { currentUser } = useCurrentUser();
   const [selectedUser, setSelectedUser] = useState("");
   console.log("This is the logged in user", currentUser?.uid);
   console.log("This is the selectedUser", selectedUser?.id);
@@ -75,8 +83,6 @@ function Chatroom() { // Pass currentUser as a prop
     return () => unsubscribeMessages();
   }, [selectedUser, currentUser]);
   
-
-
   const handleUserSelection = (user) => {
     console.log("user selected", user);
     setSelectedUser(user);
