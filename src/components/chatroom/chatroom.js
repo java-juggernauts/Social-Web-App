@@ -6,10 +6,11 @@ import SendMessage from "./SendMessage";
 import { Box } from "@mui/material";
 import styled from "@emotion/styled";
 import { useCurrentUser } from "context/CurentUserContext";
-
+import "./chatroom.css"
 const ChatBox = styled(Box)`
   display: flex;
   height: 100vh;
+  background-color: #282c34;
 `;
 
 const MessagesWrapper = styled(Box)`
@@ -18,8 +19,14 @@ const MessagesWrapper = styled(Box)`
   flex-grow: 1;
   overflow-y: auto;
   padding: 1rem;
-  background-color: #f2f2f2;
+  background-color: #282c34;
   width: 75%;
+  height: 85%;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 `;
 
 const UserList = styled(Box)`
@@ -27,18 +34,30 @@ const UserList = styled(Box)`
   flex-direction: column;
   padding: 1rem;
   border-right: 1px solid #ccc;
-  background-color: #f5f5f5;
   width: 25%;
   overflow-y: auto;
+  background-color: #282c34;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 `;
+
 
 const UserItem = styled.div`
   padding: 10px;
   border-bottom: 1px solid #ccc;
+  color: #fff;
   cursor: pointer;
   &:hover {
     background-color: #ddd;
   }
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 `;
 function Chatroom() {
   const { currentUser } = useCurrentUser();
@@ -122,9 +141,9 @@ function Chatroom() {
           );
         })}
         <span ref={scroll}></span>
+      {selectedUser && <SendMessage scroll={scroll} currentUser={currentUser} selectedUser={selectedUser} />}
       </MessagesWrapper>
 
-      {selectedUser && <SendMessage scroll={scroll} currentUser={currentUser} selectedUser={selectedUser} />}
     </ChatBox>
   );
 }
