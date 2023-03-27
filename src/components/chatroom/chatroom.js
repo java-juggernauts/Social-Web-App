@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { query, collection, orderBy, onSnapshot, limit, where } from "firebase/firestore";
+import { query, collection, orderBy, onSnapshot, limit, where, getDocs} from "firebase/firestore";
 import { db } from "lib/firebase";
 import Message from "./Message";
 import SendMessage from "./SendMessage";
 import { Box } from "@mui/material";
 import styled from "@emotion/styled";
 import { useCurrentUser } from "context/CurentUserContext";
+
 const ChatBox = styled(Box)`
   display: flex;
   height: 100vh;
@@ -59,6 +60,8 @@ const UserItem = styled.div`
   -ms-overflow-style: none;
 `;
 function Chatroom() {
+  // const [filteredUsers, setFilteredUsers] = useState([]);
+
   const { currentUser } = useCurrentUser();
   const [selectedUser, setSelectedUser] = useState("");
   console.log("This is the logged in user", currentUser?.uid);
@@ -110,6 +113,42 @@ function Chatroom() {
     return () => unsubscribeMessages();
   }, [selectedUser, currentUser]);
   
+
+  useEffect(() => {
+    console.log("userQuery useEffect");
+  
+    const fetchMessages = async () => {
+      const userQuery = query(collection(db, "users"));
+      const userSnapshot = await getDocs(userQuery);
+      let usersWithMessages = [];
+  
+      for (const userDoc of userSnapshot.docs) {
+        const user = { ...userDoc.data(), id: userDoc.id };
+        if (user.id === currentUser.uid) continue;
+  
+        const participantsUIDs = [currentUser.uid, user.id].sort().join("-");
+        const messageQuery = query(
+          collection(db, "messages"),
+          where("participants", "==", participantsUIDs)
+        );
+        const messageSnapshot = await getDocs(messageQuery);
+  
+        if (!messageSnapshot.empty) {
+          usersWithMessages.push(user);
+        }
+      }
+  
+      setUsers(usersWithMessages);
+    };
+  
+    if (currentUser) {
+      fetchMessages();
+    }
+  
+    return () => {};
+  }, [currentUser]);
+  
+  
   const handleUserSelection = (user) => {
     console.log("user selected", user);
     setSelectedUser(user);
@@ -121,12 +160,13 @@ function Chatroom() {
   return (
     <ChatBox>
       <UserList>
-        {users.map((user) => (
-          <UserItem key={user.id} onClick={() => handleUserSelection(user)}>
-            {user.username}
-          </UserItem>
-        ))}
-      </UserList>
+  {users.map((user) => (
+    <UserItem key={user.id} onClick={() => handleUserSelection(user)}>
+      {user.username}
+    </UserItem>
+  ))}
+</UserList>
+
       <MessagesWrapper>
         {messages?.map((message) => {
           const sender = users.find((user) => user.id === message.senderUid);
