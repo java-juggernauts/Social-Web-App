@@ -7,11 +7,11 @@
 
 .chat-bubble {
   border-radius: 20px 20px 20px 0;
-  padding: 15px;
+  padding: 7px;
   background-color: #6CBFD7;
   color: #243447;
   width: max-content;
-  max-width: calc(100% - 50px);
+  max-width: calc(50% - 50px);
   box-shadow: -2px 2px 1px 1px #4c768d;
   display: flex;
   align-items: flex-start;

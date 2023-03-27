@@ -6,7 +6,6 @@ import SendMessage from "./SendMessage";
 import { Box } from "@mui/material";
 import styled from "@emotion/styled";
 import { useCurrentUser } from "context/CurentUserContext";
-import "./chatroom.css"
 const ChatBox = styled(Box)`
   display: flex;
   height: 100vh;
