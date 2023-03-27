@@ -6,6 +6,7 @@ import SendMessage from "./SendMessage";
 import { Box } from "@mui/material";
 import styled from "@emotion/styled";
 import { useCurrentUser } from "context/CurentUserContext";
+import SearchBar from "./SearchBar";
 
 const ChatBox = styled(Box)`
   display: flex;
@@ -70,6 +71,8 @@ function Chatroom() {
   const [users, setUsers] = useState([]);
   const scroll = useRef();
   const [loading, setLoading] = useState(true);
+  const [searchInput, setSearchInput] = useState("");
+
   useEffect(() => {
     if (currentUser) {
       setLoading(false);
@@ -148,6 +151,30 @@ function Chatroom() {
     return () => {};
   }, [currentUser]);
   
+  const handleSearchSubmit = async (event) => {
+    event.preventDefault();
+    if (!searchInput) return;
+    const userQuery = query(
+      collection(db, "users"),
+      where("username", "==", searchInput)
+    );
+    const querySnapshot = await getDocs(userQuery);
+    const userDoc = querySnapshot.docs[0];
+    if (userDoc) {
+      const user = { ...userDoc.data(), id: userDoc.id };
+      handleUserSelection(user);
+    } else {
+      console.log("User not found");
+      // Display a message or a dialog to inform the user that the searched user was not found
+    }
+    setSearchInput("");
+  };
+  
+  const handleSearchInput = (event) => {
+    setSearchInput(event.target.value);
+  };
+  
+  
   
   const handleUserSelection = (user) => {
     console.log("user selected", user);
@@ -160,6 +187,13 @@ function Chatroom() {
   return (
     <ChatBox>
       <UserList>
+      <SearchBar
+  value={searchInput}
+  onChange={handleSearchInput}
+  onSubmit={handleSearchSubmit}
+/>
+
+
   {users.map((user) => (
     <UserItem key={user.id} onClick={() => handleUserSelection(user)}>
       {user.username}
