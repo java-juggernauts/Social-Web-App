@@ -13,6 +13,10 @@ const ChatBox = styled(Box)`
   display: flex;
   height: 100vh;
   background-color: #282c34;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const MessagesWrapper = styled(Box)`
@@ -29,6 +33,11 @@ const MessagesWrapper = styled(Box)`
   }
   scrollbar-width: none;
   -ms-overflow-style: none;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 60%;
+  }
 `;
 
 const UserList = styled(Box)`
@@ -44,7 +53,15 @@ const UserList = styled(Box)`
   }
   scrollbar-width: none;
   -ms-overflow-style: none;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 40%;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+  }
 `;
+
 
 
 const UserItem = styled.div`
