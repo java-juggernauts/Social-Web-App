@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { query, collection, orderBy, onSnapshot, limit, where, getDocs} from "firebase/firestore";
+import { query, collection, orderBy, onSnapshot, limit, where, getDocs, deleteDoc, doc, writeBatch} from "firebase/firestore";
 import { db } from "lib/firebase";
 import Message from "./Message";
 import SendMessage from "./SendMessage";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import { useCurrentUser } from "context/CurentUserContext";
 import SearchBar from "./SearchBar";
-
+import DeleteIcon from '@mui/icons-material/Delete';
 const ChatBox = styled(Box)`
   display: flex;
   height: 100vh;
@@ -47,6 +47,9 @@ const UserList = styled(Box)`
 
 
 const UserItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 10px;
   border-bottom: 1px solid #ccc;
   color: #fff;
@@ -59,9 +62,20 @@ const UserItem = styled.div`
   }
   scrollbar-width: none;
   -ms-overflow-style: none;
+
+  button {
+    margin-left: 1rem;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+  }
 `;
+
+
 function Chatroom() {
-  // const [filteredUsers, setFilteredUsers] = useState([]);
+  
 
   const { currentUser } = useCurrentUser();
   const [selectedUser, setSelectedUser] = useState("");
@@ -165,7 +179,7 @@ function Chatroom() {
       handleUserSelection(user);
     } else {
       console.log("User not found");
-      // Display a message or a dialog to inform the user that the searched user was not found
+
     }
     setSearchInput("");
   };
@@ -173,8 +187,6 @@ function Chatroom() {
   const handleSearchInput = (event) => {
     setSearchInput(event.target.value);
   };
-  
-  
   
   const handleUserSelection = (user) => {
     console.log("user selected", user);
@@ -184,22 +196,43 @@ function Chatroom() {
   if (loading) {
     return <div>Loading...</div>;
   }
+  console.log("userAvatar", currentUser.avatar);
+
+  const deleteMessages = async (selectedUserId) => {
+    const participantsUIDs = [currentUser.uid, selectedUserId].sort().join("-");
+    const messageQuery = query(
+      collection(db, "messages"),
+      where("participants", "==", participantsUIDs)
+    );
+    const querySnapshot = await getDocs(messageQuery);
+    querySnapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+  };
+
+
   return (
     <ChatBox>
       <UserList>
-      <SearchBar
-  value={searchInput}
-  onChange={handleSearchInput}
-  onSubmit={handleSearchSubmit}
-/>
+        <SearchBar
+          value={searchInput}
+          onChange={handleSearchInput}
+          onSubmit={handleSearchSubmit}
+        />
 
-
-  {users.map((user) => (
-    <UserItem key={user.id} onClick={() => handleUserSelection(user)}>
-      {user.username}
-    </UserItem>
-  ))}
-</UserList>
+        {users.map((user) => (
+          <UserItem key={user.id}>
+            <span onClick={() => handleUserSelection(user)}>{user.username}</span>
+            <Button
+              onClick={() => deleteMessages(user.id)}
+              variant="outlined"
+              size="small"
+            >
+              <DeleteIcon />
+            </Button>
+          </UserItem>
+        ))}
+      </UserList>
 
       <MessagesWrapper>
         {messages?.map((message) => {

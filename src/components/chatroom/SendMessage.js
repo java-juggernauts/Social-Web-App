@@ -40,7 +40,7 @@ const SendMessage = ({ scroll, selectedUser }) => {
         onChange={(e) => setMessage(e.target.value)}
       />
       <button variant="contained" type="submit">
-        <SendSharpIcon /> {/* Include the SendSharpIcon component within the button */}
+        <SendSharpIcon />
       </button>
     </form>
   );
