@@ -18,7 +18,7 @@ export default function Login() {
   } = useForm();
 
   async function handleLogin(data) {
-    const user = await login(data.email, data.password, DASHBOARD);
+    const user = await login(data.email, data.password, data.username, data.avatar, DASHBOARD);
     if (user) {
       setCurrentUser(user);
       localStorage.setItem("currentUser", JSON.stringify(user));

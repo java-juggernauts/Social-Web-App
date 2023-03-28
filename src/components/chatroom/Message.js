@@ -4,11 +4,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import "./message.css";
 import { format } from "date-fns";
 
-
 const Message = ({ message, senderUsername, senderAvatar }) => {
   const [user] = useAuthState(auth);
-
-  // Convert the Firestore timestamp to a JavaScript Date object and format it
   const createdAtDate = message.createdAt ? message.createdAt.toDate() : new Date();
   const formattedDate = format(createdAtDate, "MMM dd, yyyy h:mm a");
 

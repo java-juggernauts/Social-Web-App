@@ -27,8 +27,7 @@ export function useLogin() {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         user = userCredential.user;
-        // Save the user's authentication state to Local Storage
-        // localStorage.setItem('user', JSON.stringify(user));
+  
         navigate(redirectTo);
       } catch (error) {
         console.log(error.message);

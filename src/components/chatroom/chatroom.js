@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { query, collection, orderBy, onSnapshot, limit, where, getDocs, deleteDoc, doc, writeBatch} from "firebase/firestore";
+import { query, collection, orderBy, onSnapshot, limit, where, getDocs, deleteDoc } from "firebase/firestore";
 import { db } from "lib/firebase";
 import Message from "./Message";
 import SendMessage from "./SendMessage";
@@ -8,6 +8,7 @@ import styled from "@emotion/styled";
 import { useCurrentUser } from "context/CurentUserContext";
 import SearchBar from "./SearchBar";
 import DeleteIcon from '@mui/icons-material/Delete';
+
 const ChatBox = styled(Box)`
   display: flex;
   height: 100vh;
@@ -73,10 +74,7 @@ const UserItem = styled.div`
   }
 `;
 
-
 function Chatroom() {
-  
-
   const { currentUser } = useCurrentUser();
   const [selectedUser, setSelectedUser] = useState("");
   console.log("This is the logged in user", currentUser?.uid);
@@ -196,8 +194,9 @@ function Chatroom() {
   if (loading) {
     return <div>Loading...</div>;
   }
-  console.log("userAvatar", currentUser.avatar);
 
+  console.log("currentUser", currentUser);
+  console.log("selectedUser", selectedUser);
   const deleteMessages = async (selectedUserId) => {
     const participantsUIDs = [currentUser.uid, selectedUserId].sort().join("-");
     const messageQuery = query(
