@@ -4,7 +4,7 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import "./message.css";
 import SendSharpIcon from '@mui/icons-material/SendSharp';
 
-const SendMessage = ({ scroll, selectedUser }) => {
+const SendMessage = ({ scroll, currentUser, selectedUser, setRecentlyMessagedUser }) => {
   const [message, setMessage] = useState("");
 
   const sendMessage = async (event) => {
@@ -23,8 +23,10 @@ const SendMessage = ({ scroll, selectedUser }) => {
       participants: participantsUIDs,
     });
     setMessage("");
+    setRecentlyMessagedUser(selectedUser);
     scroll.current.scrollIntoView({ behavior: "smooth" });
   };
+
   return (
     <form onSubmit={(event) => sendMessage(event)} className="send-message">
       <label htmlFor="messageInput" hidden>

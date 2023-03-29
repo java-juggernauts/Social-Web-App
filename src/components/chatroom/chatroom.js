@@ -13,6 +13,7 @@ const ChatBox = styled(Box)`
   display: flex;
   height: 100vh;
   background-color: #282c34;
+  padding-top: 64px;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -62,8 +63,6 @@ const UserList = styled(Box)`
   }
 `;
 
-
-
 const UserItem = styled.div`
   display: flex;
   justify-content: space-between;
@@ -101,6 +100,8 @@ function Chatroom() {
   const scroll = useRef();
   const [loading, setLoading] = useState(true);
   const [searchInput, setSearchInput] = useState("");
+  const [recentlyMessagedUser, setRecentlyMessagedUser] = useState(null);
+
 
   useEffect(() => {
     if (currentUser) {
@@ -180,6 +181,19 @@ function Chatroom() {
     return () => {};
   }, [currentUser]);
   
+  useEffect(() => {
+    if (recentlyMessagedUser) {
+      setUsers((prevUsers) => {
+        const existingUser = prevUsers.find((user) => user.id === recentlyMessagedUser.id);
+        if (existingUser) {
+          return prevUsers;
+        } else {
+          return [...prevUsers, recentlyMessagedUser];
+        }
+      });
+    }
+  }, [recentlyMessagedUser]);
+
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
     if (!searchInput) return;
@@ -263,7 +277,12 @@ function Chatroom() {
           );
         })}
         <span ref={scroll}></span>
-      {selectedUser && <SendMessage scroll={scroll} currentUser={currentUser} selectedUser={selectedUser} />}
+      {selectedUser && <SendMessage 
+      scroll={scroll} 
+      currentUser={currentUser} 
+      selectedUser={selectedUser} 
+      setRecentlyMessagedUser={setRecentlyMessagedUser}
+      />}
       </MessagesWrapper>
 
     </ChatBox>
