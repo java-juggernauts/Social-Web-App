@@ -228,6 +228,7 @@ function Chatroom() {
 
   console.log("currentUser", currentUser);
   console.log("selectedUser", selectedUser);
+
   const deleteMessages = async (selectedUserId) => {
     const participantsUIDs = [currentUser.uid, selectedUserId].sort().join("-");
     const messageQuery = query(
@@ -238,8 +239,10 @@ function Chatroom() {
     querySnapshot.forEach(async (doc) => {
       await deleteDoc(doc.ref);
     });
+  
+    // Remove the user from the users state after deleting the messages
+    setUsers(users.filter((user) => user.id !== selectedUserId));
   };
-
 
   return (
     <ChatBox>
