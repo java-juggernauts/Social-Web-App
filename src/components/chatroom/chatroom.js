@@ -234,8 +234,8 @@ function Chatroom() {
           value={searchInput}
           onChange={handleSearchInput}
           onSubmit={handleSearchSubmit}
+          onUserSelected={handleUserSelection}
         />
-
         {users.map((user) => (
           <UserItem key={user.id}>
             <span onClick={() => handleUserSelection(user)}>{user.username}</span>
