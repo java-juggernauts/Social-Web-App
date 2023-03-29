@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
 import { auth, db } from 'lib/firebase'; 
 import { useState } from 'react';
@@ -41,21 +42,28 @@ export function useLogin() {
     return { login, isLoading };
   }
   
-export function useLogout() {
- const [signOut, isLoading, error] = useSignOut(auth);
- const { enqueueSnackbar } = useSnackbar();
- const navigate = useNavigate();
- async function logout() {
-      if (await signOut()) {
-            enqueueSnackbar("You have been logged out", { variant: "success" });
-            setTimeout(() => {
-                navigate(LOGIN);
-            }, 3000);
-      }
- }
 
+  export function useLogout() {
+    const [signOut, isLoading, error] = useSignOut(auth);
+    const { enqueueSnackbar } = useSnackbar();
+    const navigate = useNavigate();
+  
+    const logout = useCallback(async () => {
+      if (await signOut()) {
+        enqueueSnackbar("You have been logged out", { variant: "success" });
+        
+        // Clear currentUser and user objects in localStorage
+        localStorage.removeItem("currentUser");
+        localStorage.removeItem("user");
+  
+        setTimeout(() => {
+          navigate(LOGIN);
+        }, 3000);
+      }
+    }, [signOut, enqueueSnackbar, navigate]);
+  
     return { logout, isLoading, error };
-}
+  }  
 
 export function useRegister() {
     const [isLoading, setLoading] = useState(false);

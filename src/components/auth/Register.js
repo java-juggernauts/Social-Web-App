@@ -6,8 +6,10 @@ import { useRegister } from 'hooks/auth';
 import { useForm } from 'react-hook-form';
 import { emailValidate, passwordValidate, usernameValidate } from 'utils/form-validate';
 import { DASHBOARD, LOGIN } from 'lib/routes';
+import { useCurrentUser } from 'context/CurentUserContext';
 
 export default function Register() {
+  const { setCurrentUser } = useCurrentUser();
   const { register : signup, isLoading } = useRegister();
   const {
     register,
@@ -16,15 +18,21 @@ export default function Register() {
   } = useForm();
 
   async function handleRegister(data) {
-    signup({
+    const newUser = await signup({
       username: data.username,
-      email: data.email, 
-      password: data.password, 
-      redirectTo: DASHBOARD
+      email: data.email,
+      password: data.password,
+      redirectTo: DASHBOARD,
     });
+  
+    if (newUser) {
+      setCurrentUser(newUser);
+      localStorage.setItem("currentUser", JSON.stringify(newUser));
+    }
+  
     console.log(data);
   }
-
+  
   return (
     <Container maxWidth="sm">
       <Box mt={10} p={5} boxShadow={5} borderRadius="borderRadius">
@@ -48,7 +56,6 @@ export default function Register() {
               <FormHelperText>{errors.username.message}</FormHelperText>
             )}
           </FormControl>
-
 
           <FormControl fullWidth margin="normal" error={Boolean(errors.email)}>
             <Input

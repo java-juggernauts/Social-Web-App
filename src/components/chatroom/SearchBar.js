@@ -12,7 +12,6 @@ const SearchBar = ({ value, onChange, onSubmit }) => {
         fullWidth
         sx={{
           marginBottom: "1rem",
-        //   height: "50%",
           backgroundColor: "rgba(255, 255, 255, 0.1)",
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
@@ -33,6 +32,9 @@ const SearchBar = ({ value, onChange, onSubmit }) => {
           },
           '& .MuiInputBase-root': {
             color: 'rgba(255, 255, 255, 0.8)',
+          },
+          '@media (max-width: 600px)': {
+            width: '50%',
           },
         }}
       />
