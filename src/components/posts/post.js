@@ -23,7 +23,7 @@ import { uuidv4 } from "@firebase/util";
 export function useAddPost() {
   const [isLoading, setLoading] = useState(false);
 
-  async function addPost(post) {
+  async function addPost(post, onSuccess, onError) {
     setLoading(true);
     const id = uuidv4();
     try {
@@ -33,9 +33,11 @@ export function useAddPost() {
         date: serverTimestamp(),
         likes: [],
       });
+      onSuccess("Post added successfully!");
       setLoading(false);
     } catch (error) {
       console.log(error);
+      onError("Error adding post.");
       setLoading(false);
     }
   }
