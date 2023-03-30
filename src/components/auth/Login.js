@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useLogin } from 'hooks/auth';
 import { useForm } from 'react-hook-form';
 import { emailValidate, passwordValidate } from 'utils/form-validate';
-import { DASHBOARD, REGISTER } from 'lib/routes';
+import { ALLPOSTS, DASHBOARD, REGISTER } from 'lib/routes';
 import { useCurrentUser } from 'context/CurentUserContext'; 
 
 export default function Login() {
@@ -17,7 +17,7 @@ export default function Login() {
   } = useForm();
 
   async function handleLogin(data) {
-    const user = await login(data.email, data.password, DASHBOARD);
+    const user = await login(data.email, data.password, ALLPOSTS);
     if (user) {
       setCurrentUser(user);
       localStorage.setItem("currentUser", JSON.stringify(user));
