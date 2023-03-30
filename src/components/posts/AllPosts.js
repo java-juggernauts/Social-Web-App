@@ -1,10 +1,11 @@
-import { usePosts } from "./post";
-import Post from "./SinglePost";
 import { Box, Typography, Button } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
+import { usePosts } from "../../hooks/posts";
+import Post from "./SinglePost";
+import AddIcon from "@mui/icons-material/Add";
+import CircularProgress from '@mui/material/CircularProgress';
 
-function PostsList({ posts }) {
+function FindPosts({ posts }) {
   return (
     <Box px="4" align="center">
       {posts?.length === 0 ? (
@@ -23,9 +24,9 @@ export default function AllPosts() {
 
   if (isLoading)
     return (
-      <Typography fontSize="large" textAlign="center">
-        Loading posts...
-      </Typography>
+      <Box fontSize="large" textAlign="center">
+        <CircularProgress />
+      </Box>
     );
 
   return (
@@ -41,7 +42,7 @@ export default function AllPosts() {
           Add Post
         </Button>
       </Box>
-      <PostsList posts={posts} />
+      <FindPosts posts={posts} />
     </>
   );
 }
