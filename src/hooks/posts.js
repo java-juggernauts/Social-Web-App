@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { db } from "../../lib/firebase";
+import { db } from "../lib/firebase";
 import {
   collection,
   getDocs,
@@ -64,25 +64,21 @@ export function useDeletePost(id) {
   const [isLoading, setLoading] = useState(false);
 
   async function deletePost() {
-    const res = window.confirm("Delete post?");
+    setLoading(true);
 
-    if (res) {
-      setLoading(true);
+    try {
+      await deleteDoc(doc(db, "posts", id));
 
-      try {
-        await deleteDoc(doc(db, "posts", id));
+      const getData = query(
+        collection(db, "comments"),
+        where("postID", "==", id)
+      );
+      const querySnapshot = await getDocs(getData);
+      querySnapshot.forEach(async (doc) => deleteDoc(doc.ref));
 
-        const getData = query(
-          collection(db, "comments"),
-          where("postID", "==", id)
-        );
-        const querySnapshot = await getDocs(getData);
-        querySnapshot.forEach(async (doc) => deleteDoc(doc.ref));
-
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
     }
   }
 

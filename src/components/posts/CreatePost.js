@@ -8,7 +8,7 @@ import {
   AlertTitle,
 } from "@mui/material";
 import { useAuth } from "../../hooks/auth";
-import { useAddPost } from "./post";
+import { useAddPost } from "../../hooks/posts";
 import { useForm } from "react-hook-form";
 
 export default function CreatePost() {
@@ -20,6 +20,7 @@ export default function CreatePost() {
   function handleAddPost(data) {
     addPost(
       {
+        uid: user.id,
         title: data.title,
         body: data.body,
       },
@@ -31,31 +32,23 @@ export default function CreatePost() {
   return (
     <Box mx="auto" py={10} maxWidth={800}>
       {showSuccessAlert && (
-        <Alert severity="success" variant="filled" onClose={() => setShowSuccessAlert(false)} sx={{
-          position: 'fixed',
-          top: 80,
-          right: 20,
-          width: '300px',
-          transition: 'transform 0.3s ease-out',}}>
+        <Alert
+          severity="success"
+          variant="filled"
+          onClose={() => setShowSuccessAlert(false)}
+          sx={{
+            position: "fixed",
+            top: 80,
+            right: 20,
+            width: "300px",
+            transition: "transform 0.3s ease-out",
+          }}
+        >
           <AlertTitle>Success</AlertTitle>
           Post added successfully!
         </Alert>
       )}
-      <Box textAlign="center">
-        <Button
-          variant="contained"
-          sx={{
-            width: "100%",
-            maxWidth: 600,
-            margin: "auto",
-            paddingY: { xs: 2, sm: 5 },
-            marginBottom: 10,
-            fontSize: "100%",
-          }}
-        >
-          New Post
-        </Button>
-      </Box>
+      <Box textAlign="center"></Box>
       <form
         onSubmit={handleSubmit(handleAddPost)}
         sx={{
