@@ -11,7 +11,7 @@ const Message = ({ message, senderUsername, senderAvatar }) => {
 
   return (
     <div className={`chat-bubble ${message.senderUid === user.uid ? "right" : ""}`}>
-      <img className="chat-bubble__left" src={senderAvatar} alt="avatar pic" />
+      <img className="chat-bubble__left" src={senderAvatar ? senderAvatar : "https://i1.sndcdn.com/avatars-000814718707-r3bm0d-t500x500.jpg"} alt="avatar pic" />
       <div className="chat-bubble__right">
         <p className="user-name">{senderUsername}</p>
         <p className="user-message">{message.text}</p>
@@ -20,6 +20,5 @@ const Message = ({ message, senderUsername, senderAvatar }) => {
     </div>
   );
 };
-
 
 export default Message;

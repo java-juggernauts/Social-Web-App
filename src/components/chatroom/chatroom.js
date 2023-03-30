@@ -239,8 +239,6 @@ function Chatroom() {
     querySnapshot.forEach(async (doc) => {
       await deleteDoc(doc.ref);
     });
-  
-    // Remove the user from the users state after deleting the messages
     setUsers(users.filter((user) => user.id !== selectedUserId));
   };
 
@@ -272,11 +270,12 @@ function Chatroom() {
           const sender = users.find((user) => user.id === message.senderUid);
           return (
             <Message
-              key={message.id}
-              message={message}
-              senderUsername={sender ? sender.username : ""}
-              senderAvatar={sender ? sender.avatar : ""}
-            />
+  key={message.id}
+  message={message}
+  senderUsername={message.senderUid === currentUser.uid ? currentUser.username : (sender ? sender.username : "")}
+  senderAvatar={message.senderUid === currentUser.uid ? currentUser.avatar : (sender ? sender.avatar : "")}
+/>
+
           );
         })}
         <span ref={scroll}></span>

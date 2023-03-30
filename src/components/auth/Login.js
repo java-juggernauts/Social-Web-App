@@ -7,7 +7,6 @@ import { emailValidate, passwordValidate } from 'utils/form-validate';
 import { DASHBOARD, REGISTER } from 'lib/routes';
 import { useCurrentUser } from 'context/CurentUserContext'; 
 
-
 export default function Login() {
   const { setCurrentUser } = useCurrentUser();
   const { login, isLoading } = useLogin();
@@ -18,7 +17,7 @@ export default function Login() {
   } = useForm();
 
   async function handleLogin(data) {
-    const user = await login(data.email, data.password, data.username, data.avatar, DASHBOARD);
+    const user = await login(data.email, data.password, DASHBOARD);
     if (user) {
       setCurrentUser(user);
       localStorage.setItem("currentUser", JSON.stringify(user));
