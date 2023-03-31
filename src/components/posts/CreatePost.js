@@ -6,10 +6,24 @@ import {
   TextField,
   Alert,
   AlertTitle,
+  ThemeProvider, 
+  createTheme
 } from "@mui/material";
 import { useAuth } from "../../hooks/auth";
 import { useAddPost } from "../../hooks/posts";
 import { useForm } from "react-hook-form";
+
+export const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#F1F1F1',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+  },
+})
 
 export default function CreatePost() {
   const { user, isLoading: authLoading } = useAuth();
@@ -30,6 +44,7 @@ export default function CreatePost() {
   }
 
   return (
+    <ThemeProvider theme={theme}>
     <Box mx="auto" py={10} maxWidth={800}>
       {showSuccessAlert && (
         <Alert
@@ -77,5 +92,6 @@ export default function CreatePost() {
         </Stack>
       </form>
     </Box>
+    </ThemeProvider>
   );
 }

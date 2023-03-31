@@ -1,16 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { css } from '@emotion/react';
-import { AppBar } from '@mui/material'
-import { Toolbar } from '@mui/material'
-import { Typography } from '@mui/material';
-import { Button } from '@mui/material';
+import { AppBar, Button, Toolbar, createTheme, ThemeProvider } from '@mui/material'
 import { useLogout } from 'hooks/auth';
+
+export const theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#F1F1F1',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+  },
+})
 
 export default function Navbar() {
     const {logout, isLoading} = useLogout()
   return (
     <>
+    <ThemeProvider theme={theme}>
       <AppBar sx={{display: 'grid', justifyContent: 'space-evenly'}}>
         <Toolbar>
           <Button component={Link} to="/protected/chatroom" color="inherit">Chatroom</Button>
@@ -18,6 +27,7 @@ export default function Navbar() {
           <Button onClick={logout} color="inherit"> {isLoading ? 'Logging out...' : 'Logout'} </Button>
         </Toolbar>
       </AppBar>
+      </ThemeProvider>
     </>
   );
 }
