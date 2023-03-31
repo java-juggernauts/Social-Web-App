@@ -1,9 +1,22 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, createTheme, ThemeProvider } from "@mui/material";
 import { Link } from "react-router-dom";
 import { usePosts } from "../../hooks/posts";
 import Post from "./SinglePost";
 import AddIcon from "@mui/icons-material/Add";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
+
+export const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#F1F1F1',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+  },
+})
+
 
 function FindPosts({ posts }) {
   return (
@@ -24,25 +37,27 @@ export default function AllPosts() {
 
   if (isLoading)
     return (
-      <Box fontSize="large" textAlign="center">
-        <CircularProgress />
-      </Box>
+      <Box sx={{ display: 'flex' }}>
+      <CircularProgress />
+    </Box>
     );
 
   return (
     <>
+    <ThemeProvider theme={theme}>
       <Box textAlign="center">
         <Button
           component={Link}
           to="/protected/createpost"
           variant="contained"
           endIcon={<AddIcon />}
-          sx={{ marginTop: 10, height: 50, width: 200 }}
+          sx={{ marginTop: 15, height: 50, width: 200 }}
         >
           Add Post
         </Button>
       </Box>
       <FindPosts posts={posts} />
+      </ThemeProvider>
     </>
   );
 }

@@ -6,7 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-export default function Actions({ post }) {
+export default function PostActions({ post }) {
   const { id, likes } = post;
   const { user, isLoading: userLoading } = useAuth();
   const [isLiked, setIsLiked] = useState(likes.includes(user?.id));
@@ -32,6 +32,7 @@ export default function Actions({ post }) {
         <IconButton
           onClick={handleToggleLike}
           disabled={userLoading || likeLoading}
+          color="secondary"
         >
           {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
@@ -39,7 +40,12 @@ export default function Actions({ post }) {
       </Stack>
 
       <Stack direction="row" alignItems="center">
-        <IconButton ml="auto" onClick={deletePost} disabled={deleteLoading}>
+        <IconButton
+          ml="auto"
+          onClick={deletePost}
+          disabled={deleteLoading}
+          color="main"
+        >
           <DeleteIcon />
         </IconButton>
       </Stack>
