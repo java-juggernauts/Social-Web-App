@@ -6,7 +6,7 @@ query, orderBy, onSnapshot, collection, where } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useCurrentUser } from "context/CurentUserContext";
 import styled from "@emotion/styled";
-
+// MUI STYLING
 const Container = styled(Box)({
   display: "flex",
   flexDirection: "row",
@@ -30,7 +30,7 @@ const AvatarContainer = styled(Box)({
   marginTop: "20px",
   marginLeft: "0px",
 });
-
+//POST FUNCTION
 function Post({ post }) {
     return (
       <Box>
@@ -41,7 +41,7 @@ function Post({ post }) {
     );
   }
   
-
+// PROFILE PAGE REACT COMPONENT
 function ProfilePage() {
     const { currentUser, setCurrentUser } = useCurrentUser();
     const [bio, setBio] = useState(currentUser.bio || "");
