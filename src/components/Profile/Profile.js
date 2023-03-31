@@ -35,11 +35,12 @@ function Post({ post }) {
     return (
       <Box>
         <Typography variant="h6">{post.title}</Typography>
-        <Typography variant="body1">{post.content}</Typography>
+        <Typography variant="body1">{post.body}</Typography> // Update this line
         <Typography variant="caption">{new Date(post.date).toLocaleString()}</Typography>
       </Box>
     );
   }
+  
 
 function ProfilePage() {
     const { currentUser, setCurrentUser } = useCurrentUser();
