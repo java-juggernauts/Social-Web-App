@@ -11,17 +11,7 @@ import { useSnackbar } from "notistack";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import isUsernameExists from "utils/isUsernameExist";
 import { useCallback } from "react";
-import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
-import { auth, db } from 'lib/firebase'; 
-import { useState } from 'react';
-import { DASHBOARD, LOGIN } from 'lib/routes';
-import { signInWithEmailAndPassword,
-     createUserWithEmailAndPassword 
-    } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
-import { setDoc, doc } from 'firebase/firestore';
-import isUsernameExists from 'utils/isUsernameExist';
+
 
 export function useAuth() {
   const [authUser, authLoading, error] = useAuthState(auth);

@@ -8,6 +8,7 @@ import { useCurrentUser } from "context/CurentUserContext";
 import Dashboard from "components/dashboard";
 import CreatePost from "components/posts/CreatePost";
 import AllPosts from 'components/posts/AllPosts'
+import ProfilePage from "components/Profile/Profile";
 
 export const ROOT = "/";
 export const LOGIN = "/login";
@@ -17,7 +18,7 @@ export const PROTECTED = "/protected";
 export const CHATROOM = "/protected/chatroom";
 export const CREATEPOST = '/protected/createpost'
 export const ALLPOSTS = '/protected/posts'
-
+export const PROFILE = '/protected/profile'
 
 
 function RouterWrapper() {
@@ -34,6 +35,7 @@ function RouterWrapper() {
         <Route path={CHATROOM} element={<Chatroom currentUser={currentUser} />} />
         <Route path={CREATEPOST} element={<CreatePost/>} />
         <Route path={ALLPOSTS} element={<AllPosts/>}/>
+        <Route path={PROFILE} element={<ProfilePage/>}/>
        </Route>
       </Routes>
     </BrowserRouter>

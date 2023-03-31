@@ -15,6 +15,7 @@ export default function Navbar() {
         <Toolbar>
           <Button component={Link} to="/protected/chatroom" color="inherit">Chatroom</Button>
           <Button component={Link} to="/protected/posts" color="inherit">Posts</Button>
+          <Button component={Link} to="/protected/profile" color="inherit">Profile</Button>
           <Button onClick={logout} color="inherit"> {isLoading ? 'Logging out...' : 'Logout'} </Button>
         </Toolbar>
       </AppBar>
