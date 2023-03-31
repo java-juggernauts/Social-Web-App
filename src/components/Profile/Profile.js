@@ -41,7 +41,6 @@ function Post({ post }) {
     );
   }
 
-
 function ProfilePage() {
     const { currentUser, setCurrentUser } = useCurrentUser();
     const [bio, setBio] = useState(currentUser.bio || "");
