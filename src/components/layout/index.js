@@ -1,21 +1,24 @@
+import { Outlet } from "react-router-dom";
+import { useAuth } from "hooks/auth";
+import Navbar from "components/navbar/navbar";
+import { Box } from "@mui/system";
+import { CircularProgress } from "@mui/material";
 
-import { Outlet } from 'react-router-dom';
-import { useAuth } from 'hooks/auth';
-import Navbar from 'components/navbar/navbar';
+export default function Layout({ currentUser }) {
+  const { isLoading } = useAuth();
 
-
-export default function Layout({ currentUSer }) {
-
-    const { isLoading } = useAuth();
-
-    if (isLoading) {
-        return "Loading..."
-    }
-
+  if (isLoading) {
     return (
-        <>
-        <Navbar />
-        <Outlet />
-        </>
+      <Box sx={{ display: "flex", justifyContent: "center", marginTop: 50 }}>
+        <CircularProgress />
+      </Box>
     );
+  }
+
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  );
 }
