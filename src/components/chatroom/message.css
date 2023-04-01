@@ -4,58 +4,78 @@
   font-family: 'Roboto', sans-serif;
 }
 
-.chat-bubble__left {
-  max-width: 25%;
-  max-height: 25%;
-  object-fit: cover;
-  border-radius: 50%;
+.chat-bubble_header {
+  display: flex;
+  align-items: center;
 }
 
+
 .chat-bubble {
-  border-radius: 20px 20px 20px 0;
-  padding: 7px;
-  background-color: #6CBFD7;
-  color: #243447;
-  width: fit-content;
-  max-width: calc(50% - 50px);
-  box-shadow: -2px 2px 1px 1px #4c768d;
   display: flex;
-  align-items: flex-start;
+  flex-direction: row;
   margin-bottom: 20px;
-  word-wrap: break-word;
 }
 
 .chat-bubble.right {
-  margin-left: auto;
-  border-radius: 20px 20px 0 20px;
-  background-color: #E9F1F6;
-  box-shadow: -2px 2px 1px 1px #88dded;
+  flex-direction: row-reverse;
 }
 
-.chat-bubble__left {
-  width: 35px;
-  height: 35px;
+.chat-bubble__avatar {
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
+  object-fit: cover;
   margin-right: 10px;
+}
+
+.chat-bubble__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 20px 20px 20px 0;
+  padding: 12px 16px;
+  background-color: #007aff; /* Blue color for other users' messages */
+  color: #ffffff;
+  width: fit-content;
+  max-width: calc(50% - 50px);
+  word-wrap: break-word;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.chat-bubble.right .chat-bubble__content {
+  border-radius: 20px 20px 0 20px;
+  background-color: #e5e5ea; /* Gray color for current user's messages */
+  color: #000000;
 }
 
 .user-name {
   font-weight: bold;
   margin-bottom: 5px;
   font-size: 0.9rem;
-  color: #243447;
+  color: #9b9b9b;
 }
 
 .user-message {
   word-wrap: break-word;
   overflow-wrap: break-word;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.message-date {
+  font-size: 12px;
+  color: #b2b2b2;
+  margin: 4px 0 0;
+  padding-left: 4px;
+  text-align: center;
 }
 
 .send-message {
   position: fixed;
   align-items: center;
   bottom: 0px;
-  width: 65%;
+  width: 45%;
   padding: 20px 30px;
   background-color: #4078C3;
   display: flex;
@@ -92,21 +112,13 @@
   font-weight: 600;
 }
 
-.message-date {
-  font-size: 12px;
-  color: #4b4848;
-  margin: 0;
-  padding-left: 4px;
-}
-
-/* Media queries for mobile screens */
 @media (max-width: 768px) {
   .send-message {
     width: 20%;
     padding: 10px;
   }
 
-  .chat-bubble {
+  .chat-bubble__content {
     max-width: calc(70% - 50px);
   }
 }

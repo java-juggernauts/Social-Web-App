@@ -46,7 +46,7 @@ const UserList = styled(Box)`
   flex-direction: column;
   padding: 1rem;
   border-right: 1px solid #ccc;
-  width: 25%;
+  width: 40%;
   overflow-y: auto;
   background-color: #282c34;
   &::-webkit-scrollbar {
@@ -80,15 +80,31 @@ const UserItem = styled.div`
   scrollbar-width: none;
   -ms-overflow-style: none;
 
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+
   button {
     margin-left: 1rem;
     transition: background-color 0.3s;
+    padding: 3px;
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.4);
     }
   }
 `;
+
+
 
 function Chatroom() {
   const { currentUser } = useCurrentUser();
@@ -252,17 +268,24 @@ function Chatroom() {
           onUserSelected={handleUserSelection}
         />
         {users.map((user) => (
-          <UserItem key={user.id}>
-            <span onClick={() => handleUserSelection(user)}>{user.username}</span>
-            <Button
-              onClick={() => deleteMessages(user.id)}
-              variant="outlined"
-              size="small"
-            >
-              <DeleteIcon />
-            </Button>
-          </UserItem>
-        ))}
+  <UserItem key={user.id}>
+    <div className="user-info" onClick={() => handleUserSelection(user)}>
+      <img
+        src={user.avatar ? user.avatar : "https://i1.sndcdn.com/avatars-000814718707-r3bm0d-t500x500.jpg"}
+        alt={`${user.username}'s avatar`}
+      />
+      <span>{user.username}</span>
+    </div>
+    <Button
+      onClick={() => deleteMessages(user.id)}
+      variant="outlined"
+      size="small"
+    >
+      <DeleteIcon />
+    </Button>
+  </UserItem>
+))}
+
       </UserList>
 
       <MessagesWrapper>
@@ -270,11 +293,11 @@ function Chatroom() {
           const sender = users.find((user) => user.id === message.senderUid);
           return (
             <Message
-  key={message.id}
-  message={message}
-  senderUsername={message.senderUid === currentUser.uid ? currentUser.username : (sender ? sender.username : "")}
-  senderAvatar={message.senderUid === currentUser.uid ? currentUser.avatar : (sender ? sender.avatar : "")}
-/>
+              key={message.id}
+              message={message}
+              senderUsername={message.senderUid === currentUser.uid ? currentUser.username : (sender ? sender.username : "")}
+              senderAvatar={message.senderUid === currentUser.uid ? currentUser.avatar : (sender ? sender.avatar : "")}
+            />
 
           );
         })}

@@ -27,7 +27,7 @@ const SearchBar = ({ onUserSelected }) => {
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Search Users"
+          label="Start a Conversation.."
           variant="outlined"
           fullWidth
           sx={{
