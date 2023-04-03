@@ -89,8 +89,8 @@ function ProfilePage() {
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Avatar
           style={{ width: 120, height: 120, borderRadius: '50%' }}
-          src={currentUser.avatar}
-          alt={currentUser.username}
+          src={currentUser?.avatar}
+          alt={currentUser?.username}
         />
         <Box sx={{ position: 'relative', right: '2%', zIndex: 1}}>
         <input type="file" onChange={onFileChange} style={{ display: 'none' }} id="avatar-input" />
@@ -100,7 +100,7 @@ function ProfilePage() {
         </Box>
         <Box sx={{ ml: 2 }}>
           <Typography variant="h5" component="h2">
-            {currentUser.username}
+            {currentUser?.username}
           </Typography>
           <Typography variant="body2" color="text.secondary">
               Posts: {userPosts.length}
@@ -141,11 +141,11 @@ function ProfilePage() {
         >
           {showBioEdit ? 'Cancel' : 'Edit profile'}
         </Button>
-        <Button onClick={() => {
+        {showBioEdit ?(<Button onClick={() => {
           updateProfile();
           setShowBioEdit(!showBioEdit)}} variant="contained" color="primary" size="small">
           Save
-        </Button>
+        </Button>): null}
       </Box>
     </Box>
     <Divider light />
