@@ -20,10 +20,9 @@ export const PROTECTED = "/protected";
 export const CHATROOM = "/protected/chatroom";
 
 export const CREATEPOST = "/protected/createpost";
-export const ALLPOSTS = "/protected/posts"
-export const PROFILE = '/protected/profile'
+export const ALLPOSTS = "/protected/posts";
+export const PROFILE = '/protected/profile';
 
->>>>>>>>> Temporary merge branch 2
 
 function RouterWrapper() {
   const { currentUser } = useCurrentUser();
@@ -35,7 +34,7 @@ function RouterWrapper() {
         <Route path={LOGIN} element={<Login />} />
         <Route path={REGISTER} element={<Register />} />
         <Route path={PROTECTED} element={<Layout />}>
-<<<<<<<<< Temporary merge branch 1
+
           <Route index path={DASHBOARD} element={<Dashboard />} />
           <Route
             path={CHATROOM}
@@ -43,15 +42,9 @@ function RouterWrapper() {
           />
           <Route path={CREATEPOST} element={<CreatePost />} />
           <Route path={ALLPOSTS} element={<AllPosts />} />
+          <Route path={PROFILE} element={<ProfilePage/>}/>
         </Route>
-=========
-        <Route index path={DASHBOARD} element={<Dashboard />} />
-        <Route path={CHATROOM} element={<Chatroom currentUser={currentUser} />} />
-        <Route path={CREATEPOST} element={<CreatePost/>} />
-        <Route path={ALLPOSTS} element={<AllPosts/>}/>
-        <Route path={PROFILE} element={<ProfilePage/>}/>
-       </Route>
->>>>>>>>> Temporary merge branch 2
+
       </Routes>
     </BrowserRouter>
   );
