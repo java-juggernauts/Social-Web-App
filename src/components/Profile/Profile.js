@@ -1,50 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, TextField, Button, Typography, Avatar } from "@mui/material";
+import { Avatar, Box, Button, Container, IconButton, TextField, Typography } from "@mui/material";
 import { updateDoc, doc, getFirestore, getDoc, 
 query, orderBy, onSnapshot, collection, where } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useCurrentUser } from "context/CurentUserContext";
 import styled from "@emotion/styled";
-// MUI STYLING
-const Container = styled(Box)({
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "center",
-});
-
-const Profile = styled(Box)({
-  flex: 1,
-  maxWidth: "300px",
-});
-
-const Posts = styled(Box)({
-  flex: 3,
-  marginLeft: "20px",
-});
-
-const AvatarContainer = styled(Box)({
-  display: "flex",
-  justifyContent: "center",
-  marginBottom: "20px",
-  marginTop: "20px",
-  marginLeft: "0px",
-});
-//POST FUNCTION
-function Post({ post }) {
-    return (
-      <Box>
-        <Typography variant="h6">{post.title}</Typography>
-        <Typography variant="body1">{post.body}</Typography> // Update this line
-        <Typography variant="caption">{new Date(post.date).toLocaleString()}</Typography>
-      </Box>
-    );
-  }
+import Post from "../posts/SinglePost";
+import EditIcon from '@mui/icons-material/Edit';
   
 // PROFILE PAGE REACT COMPONENT
 function ProfilePage() {
     const { currentUser, setCurrentUser } = useCurrentUser();
-    const [bio, setBio] = useState(currentUser.bio || "");
+    const [bio, setBio] = useState(currentUser?.bio || "");
     const [selectedFile, setSelectedFile] = useState(null);
     const [showBioEdit, setShowBioEdit] = useState(false);
     const [userPosts, setUserPosts] = useState([]);
@@ -56,7 +24,7 @@ function ProfilePage() {
       
           if (userDocSnap.exists()) {
             // console.log(userDocSnap.data(), 'userDocSnap data');
-            setBio(userDocSnap.data().bio || "");
+            setBio(userDocSnap.data()?.bio || "");
           }
         };
 
@@ -115,58 +83,79 @@ function ProfilePage() {
     // console.log(currentUser, "currentUser")
     // console.log(bio, "bio")
   return (
-    <Container>
-      <Profile>
-        <Typography variant="h4" gutterBottom>
-          Edit Profile
-        </Typography>
-        <AvatarContainer>
-          <Avatar
-            src={currentUser.avatar}
-            alt={currentUser.username}
-            sx={{ width: 100, height: 100 }}
-          />
-        </AvatarContainer>
-        <Box mb={2}>
-          <input type="file" onChange={onFileChange} />
+    <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', py: 6, }}>
+  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2, boxShadow: 2, maxWidth: 600, width: '100%' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', mb: 4 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Avatar
+          style={{ width: 120, height: 120, borderRadius: '50%' }}
+          src={currentUser.avatar}
+          alt={currentUser.username}
+        />
+        <Box sx={{ position: 'relative', transform: 'translate(-50%, -50%)', left: '50%', zIndex: 1}}>
+        <input type="file" onChange={onFileChange} style={{ display: 'none' }} id="avatar-input" />
+        <IconButton component="label" htmlFor="avatar-input" color="primary" aria-label="edit avatar">
+          <EditIcon />
+        </IconButton>
         </Box>
-        <Button onClick={updateProfile} variant="contained" color="primary">
-          Update Profile
-        </Button>
-        <Box mb={2}>
-          {!showBioEdit && (
-            <Typography variant="body1" gutterBottom>
-            {bio || "No bio available"}
+        <Box sx={{ ml: 2 }}>
+          <Typography variant="h5" component="h2">
+            {currentUser.username}
           </Typography>
-          
-          )}
-          {showBioEdit && (
-            <TextField
-              label="Bio"
-              value={bio}
-              multiline
-              rows={4}
-              fullWidth
-              onChange={(e) => setBio(e.target.value)}
-            />
-          )}
-          <Button
-            onClick={() => setShowBioEdit(!showBioEdit)}
-            variant="contained"
-            color="secondary"
-            style={{ marginTop: "8px" }}
-          >
-            {showBioEdit ? "Cancel Edit Bio" : "Edit Bio"}
-          </Button>
+          <Typography variant="body2" color="text.secondary">
+              Posts: {userPosts.length}
+          </Typography>
         </Box>
-        
-      </Profile>
-      <Posts>
+      </Box>
+      <Button variant="contained" color="primary" size="medium" sx={{ ml: 2 }}>
+        Follow
+      </Button>
+    </Box>
+    <hr />
+    <Box sx={{ width: '100%' }}>
+      {!showBioEdit && (
+        <Typography variant="body1" gutterBottom>
+          <Typography variant="h6" component="h2">
+            Bio:
+          </Typography>
+          {bio || 'No bio available'}
+        </Typography>
+      )}
+      {showBioEdit && (
+        <TextField
+          label="Bio"
+          value={bio}
+          multiline
+          rows={4}
+          fullWidth
+          onChange={(e) => setBio(e.target.value)}
+        />
+      )}
+      <Box sx={{ mt: 2 }}>
+        <Button
+          onClick={() => setShowBioEdit(!showBioEdit)}
+          variant="outlined"
+          color="primary"
+          size="small"
+          sx={{ mr: 1 }}
+        >
+          {showBioEdit ? 'Cancel' : 'Edit profile'}
+        </Button>
+        <Button onClick={() => {
+          updateProfile();
+          setShowBioEdit(!showBioEdit)}} variant="contained" color="primary" size="small">
+          Save
+        </Button>
+      </Box>
+    </Box>
+    <hr />
+    <Box sx={{ mt: 4, width: '100%' }}>
       {userPosts.map((post) => (
         <Post key={post.id} post={post} />
       ))}
-    </Posts>
-    </Container>
+    </Box>
+  </Box>
+</Container>
   );
 }
 
