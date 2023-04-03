@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import isUsernameExists from "utils/isUsernameExist";
+import { useCallback } from "react";
+
 
 export function useAuth() {
   const [authUser, authLoading, error] = useAuthState(auth);
@@ -35,49 +37,51 @@ export function useAuth() {
 }
 
 export function useLogin() {
-  const [isLoading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  async function login(email, password, redirectTo = DASHBOARD) {
-    setLoading(true);
-    let user = null;
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      user = userCredential.user;
-      // Save the user's authentication state to Local Storage
-      // localStorage.setItem('user', JSON.stringify(user));
-      navigate(redirectTo);
-    } catch (error) {
-      console.log(error.message);
-      return false;
-    } finally {
-      setLoading(false);
+    const [isLoading, setLoading] = useState(false);
+    const navigate = useNavigate();
+  
+    async function login(email, password, redirectTo = DASHBOARD) {
+      setLoading(true);
+      let user = null;
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        user = userCredential.user;
+  
+        navigate(redirectTo);
+      } catch (error) {
+        console.log(error.message);
+        return false;
+      } finally {
+        setLoading(false);
+      }
+      return user;
     }
-    return user;
+  
+    return { login, isLoading };
   }
+  
 
-  return { login, isLoading };
-}
-
-export function useLogout() {
-  const [signOut, isLoading, error] = useSignOut(auth);
-  const { enqueueSnackbar } = useSnackbar();
-  const navigate = useNavigate();
-  async function logout() {
-    if (await signOut()) {
-      enqueueSnackbar("You have been logged out", { variant: "success" });
-      setTimeout(() => {
-        navigate(LOGIN);
-      }, 3000);
-    }
-  }
-
-  return { logout, isLoading, error };
-}
+  export function useLogout() {
+    const [signOut, isLoading, error] = useSignOut(auth);
+    const { enqueueSnackbar } = useSnackbar();
+    const navigate = useNavigate();
+  
+    const logout = useCallback(async () => {
+      if (await signOut()) {
+        enqueueSnackbar("You have been logged out", { variant: "success" });
+        
+        // Clear currentUser and user objects in localStorage
+        localStorage.removeItem("currentUser");
+        localStorage.removeItem("user");
+  
+        setTimeout(() => {
+          navigate(LOGIN);
+        }, 3000);
+      }
+    }, [signOut, enqueueSnackbar, navigate]);
+  
+    return { logout, isLoading, error };
+  }  
 
 export function useRegister() {
   const [isLoading, setLoading] = useState(false);

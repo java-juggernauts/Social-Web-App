@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { auth, db } from "lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import "./message.css";
-const SendMessage = ({ scroll, selectedUser }) => {
+import SendSharpIcon from '@mui/icons-material/SendSharp';
+
+const SendMessage = ({ scroll, currentUser, selectedUser, setRecentlyMessagedUser }) => {
   const [message, setMessage] = useState("");
 
   const sendMessage = async (event) => {
@@ -11,8 +13,8 @@ const SendMessage = ({ scroll, selectedUser }) => {
       alert("Enter valid message");
       return;
     }
-   const participantsUIDs = [auth.currentUser.uid, selectedUser.id].sort().join("-");
-   const { uid } = auth.currentUser;
+    const participantsUIDs = [auth.currentUser.uid, selectedUser.id].sort().join("-");
+    const { uid } = auth.currentUser;
     await addDoc(collection(db, "messages"), {
       text: message,
       createdAt: serverTimestamp(),
@@ -21,8 +23,10 @@ const SendMessage = ({ scroll, selectedUser }) => {
       participants: participantsUIDs,
     });
     setMessage("");
+    setRecentlyMessagedUser(selectedUser);
     scroll.current.scrollIntoView({ behavior: "smooth" });
   };
+
   return (
     <form onSubmit={(event) => sendMessage(event)} className="send-message">
       <label htmlFor="messageInput" hidden>
@@ -37,7 +41,9 @@ const SendMessage = ({ scroll, selectedUser }) => {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
-      <button type="submit">Send</button>
+      <button variant="contained" type="submit">
+        <SendSharpIcon />
+      </button>
     </form>
   );
 };
