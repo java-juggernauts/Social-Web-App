@@ -12,7 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 const ChatBox = styled(Box)`
   display: flex;
   height: 100vh;
-  background-color: #282c34;
+  background-color:  rgb(29, 29, 29);
   padding-top: 64px;
 
   @media (max-width: 768px) {
@@ -26,7 +26,7 @@ const MessagesWrapper = styled(Box)`
   flex-grow: 1;
   overflow-y: auto;
   padding: 1rem;
-  background-color: #282c34;
+  background-color:  rgb(29, 29, 29);
   width: 75%;
   height: 85%;
   &::-webkit-scrollbar {
@@ -48,7 +48,7 @@ const UserList = styled(Box)`
   border-right: 1px solid #ccc;
   width: 25%;
   overflow-y: auto;
-  background-color: #282c34;
+  background-color:  rgb(29, 29, 29);
   &::-webkit-scrollbar {
     display: none;
   }
