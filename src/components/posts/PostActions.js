@@ -6,8 +6,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-export default function Actions({ post }) {
-  const { id, likes } = post;
+export default function PostActions({ post }) {
+  const { id, likes, uid } = post;
   const { user, isLoading: userLoading } = useAuth();
   const [isLiked, setIsLiked] = useState(likes.includes(user?.id));
   const { deletePost, isLoading: deleteLoading } = useDeletePost(id);
@@ -32,17 +32,26 @@ export default function Actions({ post }) {
         <IconButton
           onClick={handleToggleLike}
           disabled={userLoading || likeLoading}
+          color="secondary"
         >
           {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
         <Typography>{likes.length}</Typography>
       </Stack>
 
-      <Stack direction="row" alignItems="center">
-        <IconButton ml="auto" onClick={deletePost} disabled={deleteLoading}>
-          <DeleteIcon />
-        </IconButton>
-      </Stack>
+      {user && user.id === uid && ( // check if the currently logged in user ID matches the posts user ID
+        <Stack direction="row" alignItems="center">
+          <IconButton
+            ml="auto"
+            onClick={deletePost}
+            disabled={deleteLoading}
+            color="main"
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Stack>
+      )}
+
     </Stack>
   );
 }

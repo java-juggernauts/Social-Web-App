@@ -1,5 +1,5 @@
 
-import { Box, Button, Container, FormControl, FormHelperText, Input, Link, Typography } from '@mui/material';
+import { Box, Button, Container, FormControl, FormHelperText, Input, Link, Typography, ThemeProvider, createTheme } from '@mui/material';
 import { Alert } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useRegister } from 'hooks/auth';
@@ -7,6 +7,19 @@ import { useForm } from 'react-hook-form';
 import { emailValidate, passwordValidate, usernameValidate } from 'utils/form-validate';
 import { DASHBOARD, LOGIN } from 'lib/routes';
 import { useCurrentUser } from 'context/CurentUserContext';
+
+export const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#F1F1F1',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+  },
+})
+
 
 export default function Register() {
   const { setCurrentUser } = useCurrentUser();
@@ -34,9 +47,10 @@ export default function Register() {
   }
   
   return (
+    <ThemeProvider theme={theme}>
     <Container maxWidth="sm">
       <Box mt={10} p={5} boxShadow={5} borderRadius="borderRadius">
-        <Typography component="h1" variant="h5" align="center">
+        <Typography component="h1" variant="h5" align="center" color='white'>
           Register
         </Typography>
         {errors.submit && (
@@ -92,7 +106,7 @@ export default function Register() {
           </Button>
 
         </form>
-        <Typography variant="body1" align="center">
+        <Typography variant="body1" align="center" color='white'>
           Already have an account?{' '}
           <Link component={RouterLink} to={LOGIN} underline="always">
             Log in
@@ -100,5 +114,6 @@ export default function Register() {
         </Typography>
       </Box>
     </Container>
+    </ThemeProvider>
   );
 }

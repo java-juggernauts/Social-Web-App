@@ -2,7 +2,7 @@ import { useState } from "react";
 import { db } from "../lib/firebase";
 import {
   collection,
-  getDocs,
+  getDoc,
   doc,
   setDoc,
   deleteDoc,
@@ -19,6 +19,7 @@ import {
   useDocumentData,
 } from "react-firebase-hooks/firestore";
 import { uuidv4 } from "@firebase/util";
+import { useAuth } from "./auth";
 
 export function useAddPost() {
   const [isLoading, setLoading] = useState(false);
@@ -61,24 +62,28 @@ export function useToggleLike({ id, isLiked, uid }) {
 }
 
 export function useDeletePost(id) {
+  const { user } = useAuth();
   const [isLoading, setLoading] = useState(false);
 
   async function deletePost() {
     setLoading(true);
 
     try {
-      await deleteDoc(doc(db, "posts", id));
+      const postRef = doc(db, "posts", id);
+      const post = await getDoc(postRef);
 
-      const getData = query(
-        collection(db, "comments"),
-        where("postID", "==", id)
-      );
-      const querySnapshot = await getDocs(getData);
-      querySnapshot.forEach(async (doc) => deleteDoc(doc.ref));
+      if (post.exists() && post.data().uid === user?.id) {
+        // check if the post exists and the uid matches
+        await deleteDoc(postRef);
 
-      setLoading(false);
+        setLoading(false);
+      } else {
+        setLoading(false);
+        throw new Error('Unauthorized');
+      }
     } catch (error) {
       setLoading(false);
+      console.error(error);
     }
   }
 

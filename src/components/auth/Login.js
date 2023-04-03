@@ -1,4 +1,4 @@
-import { Box, Button, Container, FormControl, FormHelperText, Input, Link, Typography } from '@mui/material';
+import { Box, Button, Container, FormControl, FormHelperText, Input, Link, Typography, ThemeProvider, createTheme } from '@mui/material';
 import { Alert } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useLogin } from 'hooks/auth';
@@ -19,6 +19,7 @@ export const theme = createTheme({
   },
 })
 
+
 export default function Login() {
   const { setCurrentUser } = useCurrentUser();
   const { login, isLoading } = useLogin();
@@ -37,9 +38,10 @@ export default function Login() {
   }
   
   return (
+    <ThemeProvider theme={theme}>
     <Container maxWidth="sm">
       <Box mt={10} p={5} boxShadow={5} borderRadius="borderRadius">
-        <Typography component="h1" variant="h5" align="center">
+        <Typography component="h1" variant="h5" align="center" color='white'>
           Log In
         </Typography>
         {errors.submit && (
@@ -82,7 +84,7 @@ export default function Login() {
             {isLoading ? 'Logging In...' : 'Log In'}
           </Button>
         </form>
-        <Typography variant="body1" align="center">
+        <Typography variant="body1" align="center" color='white'>
           Don't have an account?{' '}
           <Link component={RouterLink} to={REGISTER} underline="always">
             Register
@@ -90,5 +92,5 @@ export default function Login() {
         </Typography>
       </Box>
     </Container>
-
+    </ThemeProvider>
   )}
