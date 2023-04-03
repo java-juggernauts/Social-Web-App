@@ -20,7 +20,7 @@ export default function Navbar() {
   return (
     <>
     <ThemeProvider theme={theme}>
-      <AppBar sx={{display: 'grid', justifyContent: 'space-evenly'}}>
+      <AppBar sx={{display: 'grid', justifyContent: 'space-evenly' }}>
         <Toolbar>
           <Button component={Link} to="/protected/chatroom" color="inherit">Chatroom</Button>
           <Button component={Link} to="/protected/posts" color="inherit">Posts</Button>
