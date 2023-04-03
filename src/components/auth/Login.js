@@ -7,6 +7,18 @@ import { emailValidate, passwordValidate } from 'utils/form-validate';
 import { ALLPOSTS, DASHBOARD, REGISTER } from 'lib/routes';
 import { useCurrentUser } from 'context/CurentUserContext'; 
 
+export const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#F1F1F1',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+  },
+})
+
 export default function Login() {
   const { setCurrentUser } = useCurrentUser();
   const { login, isLoading } = useLogin();
