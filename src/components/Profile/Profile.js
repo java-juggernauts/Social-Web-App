@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Avatar, Box, Button, Container, IconButton, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, Container, IconButton, TextField, Typography, Divider } from "@mui/material";
 import { updateDoc, doc, getFirestore, getDoc, 
 query, orderBy, onSnapshot, collection, where } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -92,7 +92,7 @@ function ProfilePage() {
           src={currentUser.avatar}
           alt={currentUser.username}
         />
-        <Box sx={{ position: 'relative', transform: 'translate(-50%, -50%)', left: '50%', zIndex: 1}}>
+        <Box sx={{ position: 'relative', right: '2%', zIndex: 1}}>
         <input type="file" onChange={onFileChange} style={{ display: 'none' }} id="avatar-input" />
         <IconButton component="label" htmlFor="avatar-input" color="primary" aria-label="edit avatar">
           <EditIcon />
@@ -111,7 +111,7 @@ function ProfilePage() {
         Follow
       </Button>
     </Box>
-    <hr />
+    <Divider light />
     <Box sx={{ width: '100%' }}>
       {!showBioEdit && (
         <Typography variant="body1" gutterBottom>
@@ -148,7 +148,7 @@ function ProfilePage() {
         </Button>
       </Box>
     </Box>
-    <hr />
+    <Divider light />
     <Box sx={{ mt: 4, width: '100%' }}>
       {userPosts.map((post) => (
         <Post key={post.id} post={post} />
