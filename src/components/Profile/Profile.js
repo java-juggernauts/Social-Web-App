@@ -99,7 +99,7 @@ function ProfilePage() {
     // console.log(bio, "bio")
   return (
     <ThemeProvider theme={theme}>
-    <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', py: 6, }}>
+    <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', py: 8, }}>
   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2, boxShadow: 2, maxWidth: 600, width: '100%', backgroundColor: "#f0f0f0" }}>
     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', mb: 4 }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>

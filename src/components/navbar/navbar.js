@@ -20,12 +20,17 @@ export default function Navbar() {
   return (
     <>
     <ThemeProvider theme={theme}>
-      <AppBar sx={{display: 'grid', justifyContent: 'space-evenly' }}>
-        <Toolbar>
+      <AppBar sx={{display: 'flex', justifyContent: 'space-between' }}>
+        <Toolbar sx={{display: 'flex', justifyContent: 'space-between' }}>
+          <div>
+            <h1>HUMBLE</h1>
+          </div>
+          <div>
           <Button component={Link} to="/protected/chatroom" color="inherit">Chatroom</Button>
           <Button component={Link} to="/protected/posts" color="inherit">Posts</Button>
           <Button component={Link} to="/protected/profile" color="inherit">Profile</Button>
           <Button onClick={logout} color="inherit"> {isLoading ? 'Logging out...' : 'Logout'} </Button>
+          </div>
         </Toolbar>
       </AppBar>
       </ThemeProvider>
