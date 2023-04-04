@@ -1,4 +1,7 @@
 import { Card, Box, CardContent, CardMedia, Typography, createTheme, ThemeProvider } from "@mui/material";
+import { useState, useEffect } from "react";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import PostActions from "./PostActions";
 
 export const theme = createTheme({
@@ -16,8 +19,27 @@ export const theme = createTheme({
   },
 })
 
+function useAuth(post) {
+  const [author, setAuthor] = useState(null);
+  const db = getFirestore();
+
+  useEffect(() => {
+    async function fetchAuthor() {
+      const docRef = doc(db, "users", post.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setAuthor(docSnap.data());
+      }
+    }
+    fetchAuthor();
+  }, [db, post.uid]);
+
+  return { author };
+}
+
 export default function SinglePost({ post }) {
   const { title, body } = post;
+  const { author } = useAuth(post);
 
   return (
     <ThemeProvider theme={theme}>
@@ -31,13 +53,21 @@ export default function SinglePost({ post }) {
         textAlign: "start",
       }}
     >
-      <CardMedia
-        component="img"
-        sx={{ width: 100 }}
-        display="grid"
-        image="https://imgs.search.brave.com/N8CL4EgnzDP-Grt8YtJDj14ISGvD6s79DbjY6Xbhgpo/rs:fit:614:614:1/g:ce/aHR0cHM6Ly9lbW9q/aS5nZy9hc3NldHMv/ZW1vamkvMjYyN19w/ZXBlX2htbS5wbmc"
-        alt="avatar"
-      />
+      <Box sx={{ display: "flex" }}>
+        <CardMedia
+          component="img"
+          sx={{ width: 100 }}
+          display="grid"
+          image={
+            author?.avatar ||
+            "https://imgs.search.brave.com/StwFns0uM62He5quhnWVsRXoumadskiDsQZDGtNsKqU/rs:fit:512:512:1/g:ce/aHR0cHM6Ly93d3cu/c2xvdGNoYXJ0ZXIu/bmV0L3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDIwLzAyL25vLWF2/YXRhci5wbmc"
+          }
+          alt="avatar"
+        />
+        <Typography variant='h6' sx={{ alignSelf: "center", pl: 1 }}>
+          {author?.username}
+        </Typography>
+      </Box>
       <Box sx={{ display: "flex", flexDirection: "column", boxShadow: 1 }}>
         <CardContent sx={{ flex: "1 0 auto" }}>
           <Typography component="div" variant="h6">

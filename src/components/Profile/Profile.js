@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Avatar, Box, Button, Container, IconButton, TextField, Typography, Divider } from "@mui/material";
+import { Avatar, Box, Button, Container, IconButton, TextField, Typography, createTheme,Divider, ThemeProvider } from "@mui/material";
 import { updateDoc, doc, getFirestore, getDoc, 
 query, orderBy, onSnapshot, collection, where } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -8,7 +8,22 @@ import { useCurrentUser } from "context/CurentUserContext";
 import styled from "@emotion/styled";
 import Post from "../posts/SinglePost";
 import EditIcon from '@mui/icons-material/Edit';
-  
+
+export const theme = createTheme({
+  palette: {
+    background: {
+      paper: '#F1F1F1', // your color
+    },
+    mode: 'light',
+    primary: {
+      main: '#F1F1F1',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+  },
+})
+
 // PROFILE PAGE REACT COMPONENT
 function ProfilePage() {
     const { currentUser, setCurrentUser } = useCurrentUser();
@@ -83,8 +98,9 @@ function ProfilePage() {
     // console.log(currentUser, "currentUser")
     // console.log(bio, "bio")
   return (
-    <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', py: 6, }}>
-  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2, boxShadow: 2, maxWidth: 600, width: '100%' }}>
+    <ThemeProvider theme={theme}>
+    <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', py: 6, marginTop: 15 }}>
+  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2, boxShadow: 2, maxWidth: 600, width: '100%', backgroundColor: "#f0f0f0" }}>
     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', mb: 4 }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Avatar
@@ -94,7 +110,7 @@ function ProfilePage() {
         />
         <Box sx={{ position: 'relative', right: '2%', zIndex: 1}}>
         <input type="file" onChange={onFileChange} style={{ display: 'none' }} id="avatar-input" />
-        <IconButton component="label" htmlFor="avatar-input" color="primary" aria-label="edit avatar">
+        <IconButton component="label" htmlFor="avatar-input" color="#bebdbf" aria-label="edit avatar">
           <EditIcon />
         </IconButton>
         </Box>
@@ -134,7 +150,7 @@ function ProfilePage() {
       <Box sx={{ mt: 2 }}>
         <Button
           onClick={() => setShowBioEdit(!showBioEdit)}
-          variant="outlined"
+          variant="contained"
           color="primary"
           size="small"
           sx={{ mr: 1 }}
@@ -156,6 +172,7 @@ function ProfilePage() {
     </Box>
   </Box>
 </Container>
+</ThemeProvider>
   );
 }
 
